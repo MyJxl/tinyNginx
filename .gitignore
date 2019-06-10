@@ -1,0 +1,7 @@
+# target
+nginx
+
+# Intermediate files
+app/dep/*
+app/link_obj/*
+
