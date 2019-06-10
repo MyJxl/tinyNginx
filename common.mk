@@ -3,10 +3,10 @@
 
 ifeq ($(DEBUG),true)
 #-g是生成调试信息。GNU调试器可以利用该信息
-CC = gcc -g
+CC = g++ -g
 VERSION = debug
 else
-CC = gcc
+CC = g++
 VERSION = release
 endif
 
@@ -14,14 +14,14 @@ endif
 
 # $(wildcard *.c)表示扫描当前目录下所有.c文件
 #SRCS = nginx.c ngx_conf.c
-SRCS = $(wildcard *.c)
+SRCS = $(wildcard *.cpp)
 
 #OBJS = nginx.o ngx_conf.o  这么一个一个增加.o太麻烦，下行换一种写法：把字符串中的.c替换为.o
-OBJS = $(SRCS:.c=.o)
+OBJS = $(SRCS:.cpp=.o)
 
 #把字符串中的.c替换为.d
 #DEPS = nginx.d ngx_conf.d
-DEPS = $(SRCS:.c=.d)
+DEPS = $(SRCS:.cpp=.d)
 
 #可以指定BIN文件的位置,addprefix是增加前缀函数
 BIN := $(addprefix $(BUILD_ROOT)/,$(BIN))
@@ -75,11 +75,11 @@ $(BIN):$(LINK_OBJ)
 
 #----------------------------------------------------------------2begin-----------------
 #%.o:%.c
-$(LINK_OBJ_DIR)/%.o:%.c
+$(LINK_OBJ_DIR)/%.o:%.cpp
 # gcc -c是生成.o目标文件   -I可以指定头文件的路径
 #如下不排除有其他字符串，所以从其中专门把.c过滤出来 
 #$(CC) -o $@ -c $^
-	$(CC) -I$(INCLUDE_PATH) -o $@ -c $(filter %.c,$^)
+	$(CC) -I$(INCLUDE_PATH) -o $@ -c $(filter %.cpp,$^)
 #----------------------------------------------------------------2end-------------------
 
 
@@ -89,7 +89,7 @@ $(LINK_OBJ_DIR)/%.o:%.c
 #那一个.o依赖于哪些.h文件，我们可以用“gcc -MM c程序文件名” 来获得这些依赖信息并重定向保存到.d文件中
 #.d文件中的内容可能形如：nginx.o: nginx.c ngx_func.h
 #%.d:%.c
-$(DEP_DIR)/%.d:%.c
+$(DEP_DIR)/%.d:%.cpp
 #gcc -MM $^ > $@
 #.d文件中的内容形如：nginx.o: nginx.c ngx_func.h ../signal/ngx_signal.h，但现在的问题是我们的.o文件已经放到了专门的目录
 # 所以我们要正确指明.o文件路径这样，对应的.h,.c修改后，make时才能发现，这里需要用到sed文本处理工具和一些正则表达式语法，不必深究

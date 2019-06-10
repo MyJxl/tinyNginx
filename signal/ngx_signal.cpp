@@ -5,6 +5,6 @@
 
 void mysignal()
 {      
-    printf("exec mysignal!\n");
+    printf("exec mysignal()!\n");
     return ;
 }
