@@ -37,7 +37,7 @@ void ngx_init_setproctitle()
 void ngx_setproctitle(const char *title)
 {
     //我们假设，所有的命令 行参数我们都不需要用到了，可以被随意覆盖了；
-    //注意：我们的标题长度，不会长到原始标题和原始环境变量都装不下，否则怕出问题，不处理
+    //注意：我们的标题长度，不能长到原始标题和原始环境变量都装不下，否则怕出问题，不处理
     
     //(1)计算新标题长度
     size_t ititlelen = strlen(title); 

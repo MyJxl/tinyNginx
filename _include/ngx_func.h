@@ -1,9 +1,6 @@
 #ifndef __NGX_FUNC_H__
 #define __NGX_FUNC_H__
 
-//函数声明
-void myconf();    
-#define  MYVER  "1.1"
 
 //字符串相关函数
 void Rtrim(char *string);
