@@ -2,7 +2,7 @@
 nginx
 
 # Intermediate files
-app/dep/*
-app/link_obj/*
+app/dep/*.d
+app/link_obj/*.o
 
 .vscode
