@@ -4,5 +4,7 @@ nginx
 # Intermediate files
 app/dep/*.d
 app/link_obj/*.o
+test/*.o
+test/*.out
 
 .vscode
