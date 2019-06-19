@@ -24,11 +24,15 @@ typedef struct
 
 
 //外部全局量声明
+extern size_t      g_argvneedmem;
+extern size_t      g_envneedmem; 
+extern int         g_os_argc; 
 extern char  **g_os_argv;
 extern char  *gp_envmem; 
-extern int   g_environlen; 
+
 
 extern pid_t       ngx_pid;
+extern pid_t       ngx_parent;
 extern ngx_log_t   ngx_log;
 
 #endif

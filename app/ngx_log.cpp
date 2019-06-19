@@ -37,7 +37,7 @@ ngx_log_t   ngx_log;
 //描述：通过可变参数组合出字符串【支持...省略号形参】，自动往字符串最末尾增加换行符【所以调用者不用加\n】， 往标准错误上输出这个字符串；
 //     如果err不为0，表示有错误，会将该错误编号以及对应的错误信息一并放到组合出的字符串中一起显示；
 
-//《c++从入门到精通》里老师讲解过，比较典型的C语言中的写法，就是这种va_start,va_end
+//比较典型的C语言中的写法，就是这种va_start,va_end
 //fmt:通过这第一个普通参数来寻址后续的所有可变参数的类型及其值
 //调用格式比如：ngx_log_stderr(0, "invalid option: \"%s\",%d", "testinfo",123);
  /* 
@@ -220,7 +220,7 @@ void ngx_log_error_core(int level,  int err, const char *fmt, ...)
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//描述：日志初始化，就是把日志文件打开 ，注意这里边涉及到释放的问题，如何解决？
+//描述：日志初始化，就是把日志文件打开，注意这里边涉及到释放的问题，如何解决？
 void ngx_log_init()
 {
     u_char *plogname = NULL;
@@ -232,17 +232,18 @@ void ngx_log_init()
     if(plogname == NULL)
     {
         //没读到，就要给个缺省的路径文件名了
-        plogname = (u_char *) NGX_ERROR_LOG_PATH; //"logs/error.log" ,logs目录需要提前建立出来
+        plogname = (u_char *) NGX_ERROR_LOG_PATH; //"logs/error.log", logs目录需要提前建立出来
     }
-    ngx_log.log_level = p_config->GetIntDefault("LogLevel",NGX_LOG_NOTICE);//缺省日志等级为6【注意】 ，如果读失败，就给缺省日志等级
+    ngx_log.log_level = p_config->GetIntDefault("LogLevel", NGX_LOG_NOTICE);//缺省日志等级为6【注意】 ，如果读失败，就给缺省日志等级
     //nlen = strlen((const char *)plogname);
 
     //只写打开|追加到末尾|文件不存在则创建【这个需要跟第三参数指定文件访问权限】
-    //mode = 0644：文件访问权限， 6: 110    , 4: 100：     【用户：读写， 用户所在组：读，其他：读】 老师在第三章第一节介绍过
+    //mode = 0644：文件访问权限， 6: 110    , 4: 100：     【用户：读写， 用户所在组：读，其他：读】
+    //ngx_log.fd = open((const char *)plogname,O_WRONLY|O_APPEND|O_CREAT|O_DIRECT,0644);   //绕过内和缓冲区，write()成功则写磁盘必然成功，但效率可能会比较低；
     ngx_log.fd = open((const char *)plogname,O_WRONLY|O_APPEND|O_CREAT,0644);  
     if (ngx_log.fd == -1)  //如果有错误，则直接定位到 标准错误上去 
     {
-        ngx_log_stderr(errno,"[alert] could not open error log file: open() \"%s\" failed", plogname);
+        ngx_log_stderr(errno, "[alert] could not open error log file: open() \"%s\" failed", plogname);
         ngx_log.fd = STDERR_FILENO; //直接定位到标准错误去了        
     } 
     return;

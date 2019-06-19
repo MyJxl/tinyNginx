@@ -99,7 +99,7 @@ const char *CConfig::GetString(const char *p_itemname)
 	{	
 		if(strcasecmp( (*pos)->ItemName,p_itemname) == 0)
 			return (*pos)->ItemContent;
-	}//end for
+	} //end for
 	return NULL;
 }
 //根据ItemName获取数字类型配置信息，不修改不用互斥
